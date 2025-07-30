@@ -7,7 +7,7 @@ from pyrogram import filters
 from SaitamaRobot.pyrogramee.pluginshelper import admins_only, get_text
 from SaitamaRobot import pbot
 
-@pbot.on_message(filters.command('all', ['!', '@', '/', '.']) & ~filters.edited & ~filters.bot)
+@pbot.on_message(filters.command('all', ['!', '@', '/', '.']) & ~filters.bot)
 async def all(client, message):
     await message.reply("🥳 Qarışıq Tağ Prosesi Başladı...")
     chat_id = message.chat.id
@@ -30,7 +30,7 @@ async def all(client, message):
             string = ""
 
 
-@pbot.on_message(filters.command('tag', ['!', '@', '/', '.']) & ~filters.edited & ~filters.bot)
+@pbot.on_message(filters.command('tag', ['!', '@', '/', '.']) & ~filters.bot)
 async def tag(client, message):
     await message.reply("🥳 Tək-Tək Tağ Prosesi Başladı...")
     chat_id = message.chat.id
@@ -52,7 +52,7 @@ async def tag(client, message):
             limit = 1
             string = ""
 
-@pbot.on_message(filters.command('tagstop', ['!', '/', '.']) & ~filters.edited & ~filters.bot)
+@pbot.on_message(filters.command('tagstop', ['!', '/', '.']) & ~filters.bot)
 async def tagstop(client, message):
     await message.reply("😌 Tağ etməə prosesi dayandırıldı")
     chat_id = message.chat.id
