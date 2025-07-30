@@ -25,7 +25,7 @@ class Config(object):
     EVENT_LOGS = -1001456155319  #Prints information like gbans, sudo promotes, AI enabled disable states that may help in debugging and shit
 
     #RECOMMENDED
-    SQLALCHEMY_DATABASE_URI = 'postgres://xgwjridmfebpna:2c8caa89a016e11aacba85822213349c8db16a714cecf8c848f78e96cf4c2892@ec2-54-225-214-37.compute-1.amazonaws.com:5432/dvnfn04k9beug'  # needed for any database modules
+    SQLALCHEMY_DATABASE_URI = 'postgresql://xgwjridmfebpna:2c8caa89a016e11aacba85822213349c8db16a714cecf8c848f78e96cf4c2892@ec2-54-225-214-37.compute-1.amazonaws.com:5432/dvnfn04k9beug'  # needed for any database modules
     LOAD = []
     NO_LOAD = ['rss', 'cleaner', 'connection', 'math']
     WEBHOOK = False
