@@ -2,26 +2,25 @@ from telegram import Update
 from telegram.ext import MessageFilter
 from SaitamaRobot import DEV_USERS, DRAGONS, DEMONS
 
-
 class CustomFilters:
 
     class _Supporters(MessageFilter):
         def filter(self, update: Update) -> bool:
-            msg = update.effective_message
+            msg = getattr(update, "effective_message", None)
             return bool(msg and msg.from_user and msg.from_user.id in DEMONS)
 
     support_filter = _Supporters()
 
     class _Sudoers(MessageFilter):
         def filter(self, update: Update) -> bool:
-            msg = update.effective_message
+            msg = getattr(update, "effective_message", None)
             return bool(msg and msg.from_user and msg.from_user.id in DRAGONS)
 
     sudo_filter = _Sudoers()
 
     class _Developers(MessageFilter):
         def filter(self, update: Update) -> bool:
-            msg = update.effective_message
+            msg = getattr(update, "effective_message", None)
             return bool(msg and msg.from_user and msg.from_user.id in DEV_USERS)
 
     dev_filter = _Developers()
@@ -40,14 +39,14 @@ class CustomFilters:
     class _HasText(MessageFilter):
         def filter(self, update: Update) -> bool:
             msg = getattr(update, "effective_message", None)
-            if not msg:
-                return False
-            return any([
-                getattr(msg, "text", None),
-                getattr(msg, "sticker", None),
-                getattr(msg, "photo", None),
-                getattr(msg, "document", None),
-                getattr(msg, "video", None),
-            ])
+            return bool(
+                msg and (
+                    getattr(msg, "text", None) or
+                    getattr(msg, "sticker", None) or
+                    getattr(msg, "photo", None) or
+                    getattr(msg, "document", None) or
+                    getattr(msg, "video", None)
+                )
+            )
 
     has_text = _HasText()
