@@ -70,3 +70,5 @@ carbonnow
 pretty_errors
 google_trans_new
 cryptography
+coffeehouse
+pynewtonmath
