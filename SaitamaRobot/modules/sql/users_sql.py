@@ -2,13 +2,19 @@ import threading
 
 from SaitamaRobot import dispatcher
 from SaitamaRobot.modules.sql import BASE, SESSION
-from sqlalchemy import (Column, ForeignKey, Integer, String, UnicodeText,
-                        UniqueConstraint, func)
-
+from sqlalchemy import (
+    Column,
+    ForeignKey,
+    BigInteger,
+    String,
+    UnicodeText,
+    UniqueConstraint,
+    func,
+)
 
 class Users(BASE):
     __tablename__ = "users"
-    user_id = Column(Integer, primary_key=True)
+    user_id = Column(BigInteger, primary_key=True)
     username = Column(UnicodeText)
 
     def __init__(self, user_id, username=None):
@@ -34,18 +40,16 @@ class Chats(BASE):
 
 class ChatMembers(BASE):
     __tablename__ = "chat_members"
-    priv_chat_id = Column(Integer, primary_key=True)
-    # NOTE: Use dual primary key instead of private primary key?
+    priv_chat_id = Column(BigInteger, primary_key=True)
     chat = Column(
         String(14),
         ForeignKey("chats.chat_id", onupdate="CASCADE", ondelete="CASCADE"),
         nullable=False)
     user = Column(
-        Integer,
+        BigInteger,
         ForeignKey("users.user_id", onupdate="CASCADE", ondelete="CASCADE"),
         nullable=False)
-    __table_args__ = (UniqueConstraint('chat', 'user',
-                                       name='_chat_members_uc'),)
+    __table_args__ = (UniqueConstraint('chat', 'user', name='_chat_members_uc'),)
 
     def __init__(self, chat, user):
         self.chat = chat
@@ -90,7 +94,6 @@ def update_user(user_id, username, chat_id=None, chat_name=None):
             chat = Chats(str(chat_id), chat_name)
             SESSION.add(chat)
             SESSION.flush()
-
         else:
             chat.chat_name = chat_name
 
