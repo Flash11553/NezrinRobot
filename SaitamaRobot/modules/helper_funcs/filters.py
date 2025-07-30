@@ -1,67 +1,63 @@
 from telegram import Update
 from telegram.ext import MessageFilter
-
 from SaitamaRobot import DEV_USERS, DRAGONS, DEMONS
 
 
-class CustomFilters:
+class SupportFilter(MessageFilter):
+    def filter(self, update: Update) -> bool:
+        return update.effective_user and update.effective_user.id in DEMONS
 
-    class _Supporters(MessageFilter):
-        def __init__(self):
-            super().__init__()
+    def __call__(self, update: Update) -> bool:
+        return self.filter(update)
 
-        def filter(self, update: Update) -> bool:
-            msg = update.effective_message
-            return bool(msg and msg.from_user and msg.from_user.id in DEMONS)
 
-    support_filter = _Supporters()
+class SudoFilter(MessageFilter):
+    def filter(self, update: Update) -> bool:
+        return update.effective_user and update.effective_user.id in DRAGONS
 
-    class _Sudoers(MessageFilter):
-        def __init__(self):
-            super().__init__()
+    def __call__(self, update: Update) -> bool:
+        return self.filter(update)
 
-        def filter(self, update: Update) -> bool:
-            msg = update.effective_message
-            return bool(msg and msg.from_user and msg.from_user.id in DRAGONS)
 
-    sudo_filter = _Sudoers()
+class DevFilter(MessageFilter):
+    def filter(self, update: Update) -> bool:
+        return update.effective_user and update.effective_user.id in DEV_USERS
 
-    class _Developers(MessageFilter):
-        def __init__(self):
-            super().__init__()
+    def __call__(self, update: Update) -> bool:
+        return self.filter(update)
 
-        def filter(self, update: Update) -> bool:
-            msg = update.effective_message
-            return bool(msg and msg.from_user and msg.from_user.id in DEV_USERS)
 
-    dev_filter = _Developers()
+class MimeTypeFilter(MessageFilter):
+    def __init__(self, mimetype: str):
+        self.mime_type = mimetype
+        super().__init__()
 
-    class _MimeType(MessageFilter):
-        def __init__(self, mimetype: str):
-            super().__init__()
-            self.mime_type = mimetype
-            self.name = f"CustomFilters.mime_type({self.mime_type})"
+    def filter(self, update: Update) -> bool:
+        msg = update.effective_message
+        return (
+            msg and msg.document and msg.document.mime_type == self.mime_type
+        )
 
-        def filter(self, update: Update) -> bool:
-            msg = update.effective_message
-            return bool(msg and msg.document and msg.document.mime_type == self.mime_type)
+    def __call__(self, update: Update) -> bool:
+        return self.filter(update)
 
-    mime_type = _MimeType
 
-    class _HasText(MessageFilter):
-        def __init__(self):
-            super().__init__()
-
-        def filter(self, update: Update) -> bool:
-            msg = update.effective_message
-            return bool(
-                msg and (
-                    msg.text or
-                    msg.sticker or
-                    msg.photo or
-                    msg.document or
-                    msg.video
-                )
+class HasTextFilter(MessageFilter):
+    def filter(self, update: Update) -> bool:
+        msg = update.effective_message
+        return bool(
+            msg and (
+                msg.text or msg.sticker or msg.photo or msg.document or msg.video
             )
+        )
 
-    has_text = _HasText()
+    def __call__(self, update: Update) -> bool:
+        return self.filter(update)
+
+
+# Tək yerdən istifadə etmək üçün:
+support_filter = SupportFilter()
+sudo_filter = SudoFilter()
+dev_filter = DevFilter()
+mime_type = MimeTypeFilter  # instansiatə ehtiyac olanda istifadə et
+has_text = HasTextFilter()
