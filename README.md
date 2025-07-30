@@ -12,7 +12,7 @@
 </p>
 
 ----
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/aykhan026/NezrinRobot.git)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Flash11553/NezrinRobot.git)
 
 
 ### Qeyd
