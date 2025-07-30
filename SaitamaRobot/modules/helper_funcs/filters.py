@@ -1,31 +1,32 @@
 from telegram import Update
-from telegram.ext import MessageFilter
+from telegram.ext import BaseFilter  # Dəyişiklik budur
+
 from SaitamaRobot import DEV_USERS, DRAGONS, DEMONS
 
 class CustomFilters:
 
-    class _Supporters(MessageFilter):
+    class _Supporters(BaseFilter):
         def filter(self, update: Update) -> bool:
             msg = getattr(update, "effective_message", None)
             return bool(msg and msg.from_user and msg.from_user.id in DEMONS)
 
     support_filter = _Supporters()
 
-    class _Sudoers(MessageFilter):
+    class _Sudoers(BaseFilter):
         def filter(self, update: Update) -> bool:
             msg = getattr(update, "effective_message", None)
             return bool(msg and msg.from_user and msg.from_user.id in DRAGONS)
 
     sudo_filter = _Sudoers()
 
-    class _Developers(MessageFilter):
+    class _Developers(BaseFilter):
         def filter(self, update: Update) -> bool:
             msg = getattr(update, "effective_message", None)
             return bool(msg and msg.from_user and msg.from_user.id in DEV_USERS)
 
     dev_filter = _Developers()
 
-    class _MimeType(MessageFilter):
+    class _MimeType(BaseFilter):
         def __init__(self, mimetype: str):
             self.mime_type = mimetype
             self.name = f"CustomFilters.mime_type({self.mime_type})"
@@ -36,7 +37,7 @@ class CustomFilters:
 
     mime_type = _MimeType
 
-    class _HasText(MessageFilter):
+    class _HasText(BaseFilter):
         def filter(self, update: Update) -> bool:
             msg = getattr(update, "effective_message", None)
             return bool(
